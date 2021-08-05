@@ -2,33 +2,37 @@
 #define _SCAN_H_
 
 #include <stdint.h>
+#include <stdbool.h>
+#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define SCAN_BUF_LEN 80
 
 typedef struct  Scanner_ {
-    uint32_t readPos;
-    uint32_t lineSize;
-    uint32_t lineNum;
-    uint32_t colNum;
-    char lastch;
+    int readPos;
+    int lineSize;
+    int lineNum;
+    int colNum;
+    int aheadStatus;
+    char curCh;
+    char lastCh;
     FILE* source;
     char buf[SCAN_BUF_LEN];
 } Scanner;
 
-/**
- *Scanner 构造方法
- */
+
 Scanner* Scanner_new(FILE* file);
 
-/**
- *Scanner 析构方法
- */
 void Scanner_delete(Scanner* scanner);
 
-/**
- *Scanner 扫描下一个字符
- */
-char Scanner_getNextChar(Scanner* scanner);
+/* 读取下一个字符 */
+char Scanner_nextChar(Scanner* scanner);
+
+/* 预读一个字符 */
+char Scanner_lookAheadChar(Scanner* scanner);
+
+/* 匹配才读取 */
+bool Scanner_matchNextChar(Scanner* scanner,char ch);
 
 #endif

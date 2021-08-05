@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "token.h": "c",
+        "lex.h": "c",
+        "stdbool.h": "c",
+        "stdint.h": "c",
+        "stdlib.h": "c",
+        "string.h": "c",
+        "stdio.h": "c"
+    }
+}

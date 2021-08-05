@@ -1,4 +1,5 @@
 #include "scan.h"
+#include "lex.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,11 +25,17 @@ int  main(int  argc,  char*  argv[]) {
     FILE* file = readFile(prog);
 
     Scanner* scanner = Scanner_new(file);
-    char ch;
-    while( (ch = Scanner_nextChar(scanner))!=-1 ) {
-        fprintf(stdout,"char: %c\t",ch);
-        fprintf(stdout,"ahead char: %c\n",Scanner_lookAheadChar(scanner));
+    Lexer* lexer = Lexer_new(scanner);
+
+    Token* token =Lexer_nextToken(lexer);
+    while( token->tokenKind !=TK_EOF ) {
+        char* kindName = Token_findKindName(token->tokenKind);
+        if(token->tokenKind !=TK_UNKNOWN && kindName !=NULL) {
+            fprintf(stdout,"[tokenType: %s, line: %d]\n", kindName ,token->lineNo);
+        }
+        token =Lexer_nextToken(lexer);
     }
     Scanner_delete(scanner);
+    Lexer_delete(lexer);
  
 }

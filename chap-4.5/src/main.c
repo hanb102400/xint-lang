@@ -10,7 +10,7 @@ FILE* readFile(char* filename){
         exit(1);
     }
     FILE *screen = stdout; /* send listing to screen */
-    fprintf(screen,"\nnXINT CODE COMPILATION: %s\n",filename);
+    fprintf(screen,"\nXINT CODE COMPILATION: %s\n",filename);
     return source;
 }
 
@@ -27,12 +27,13 @@ int  main(int  argc,  char*  argv[]) {
     Scanner* scanner = Scanner_new(file);
     Lexer* lexer = Lexer_new(scanner);
 
-    Token* token =Lexer_getNextToken(lexer);
-    while( token->tokenType !=TK_EOF ) {
-        if(token->tokenType !=TK_UNKNOWN) {
-            fprintf(stdout,"[tokenType: %d]\n",token->tokenType );
+    Token* token =Lexer_nextToken(lexer);
+    while( token->tokenKind !=TK_EOF ) {
+        char* kindName = Token_findKindName(token->tokenKind);
+        if(token->tokenKind !=TK_UNKNOWN && kindName !=NULL) {
+            fprintf(stdout,"[tokenType: %d, %s]\n",token->tokenKind ,kindName);
         }
-        token =Lexer_getNextToken(lexer);
+        token =Lexer_nextToken(lexer);
     }
     Scanner_delete(scanner);
     Lexer_delete(lexer);

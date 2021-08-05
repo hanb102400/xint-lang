@@ -19,7 +19,11 @@ Scanner* Scanner_new(FILE* file){
 }
 
 void Scanner_delete(Scanner* scanner){
-    free(scanner);
+    if(scanner!=NULL) {
+        free(scanner);
+        scanner = NULL;
+    }
+  
 }
 
 /* aheadStatus: 0非预读，1预读 */
@@ -67,13 +71,11 @@ char Scanner_nextChar(Scanner* scanner){
 
 }
 
-
 char Scanner_lookAheadChar(Scanner* scanner){
     char aheadCh = Scanner_nextChar(scanner);
     scanner->aheadStatus=1;
     return aheadCh;
 }
-
 
 bool Scanner_matchNextChar(Scanner* scanner,char ch){
     if(Scanner_lookAheadChar(scanner)==ch) {

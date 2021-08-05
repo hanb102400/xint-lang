@@ -1,144 +1,96 @@
 #include "lex.h"
 
+extern bool isWhitespace(char ch);
 
-bool isWhitespace(char ch){
-	return ch ==' '|| ch =='\n'|| ch =='\r' || ch =='\t'  ;
-}
-
-Lexer* Lexer_new(Scanner* scanner){
-    if(!scanner) {
-        fprintf(stderr,"scanner is null\n");
+Lexer *Lexer_new(Scanner *scanner)
+{
+    if (!scanner)
+    {
+        fprintf(stderr, "scanner is null\n");
         return NULL;
     }
-	Lexer *lexer  = (Lexer*) malloc(sizeof(Lexer));
-	lexer->scanner=scanner;
-	lexer->curCh=' ';
-	lexer->curStatus=0;
-	lexer->curToken.tokenType =TK_UNKNOWN;
-	lexer->lastToken = lexer->curToken;
+    Lexer *lexer = (Lexer *)malloc(sizeof(Lexer));
+    lexer->scanner = scanner;
+    lexer->curStatus = 0;
+    lexer->curToken.tokenKind = TK_UNKNOWN;
+    lexer->lastToken = lexer->curToken;
     return lexer;
 }
 
-void Lexer_delete(Lexer* lexer){
-	free(lexer);
+void Lexer_delete(Lexer *lexer)
+{
+    free(lexer);
 }
 
-Token* Lexer_getNextToken(Lexer* lexer){
+Token *Lexer_nextToken(Lexer *lexer)
+{
 
-    Scanner* scanner = lexer->scanner;
-    lexer->curCh = Scanner_getNextChar(scanner);
-    fprintf(stderr,"curCh is %c\n", lexer->curCh);
+    char ch = Scanner_nextChar(lexer->scanner);
+    fprintf(stderr,"curChar is %c\n", ch);
 
-    while(lexer->curCh!=-1) {
-        if (isWhitespace(lexer->curCh)){//lexer
-            lexer->curCh =  Scanner_getNextChar(scanner);
+    while(ch!=-1) {
+
+        //跳过空白字符
+        if (isWhitespace(ch)){//lexer
+            ch = Scanner_nextChar(lexer->scanner);
             continue;
         }
 
-		switch(lexer->curCh){ //界符
+		switch(ch){ //界符
 			case '+':
-				lexer->curToken.tokenType=TK_ADD;  
+				lexer->curToken.tokenKind=TK_ADD;  
 				break;
 			case '-':
-				lexer->curToken.tokenType=TK_SUB;  
+				lexer->curToken.tokenKind=TK_SUB;  
 				break;
 			case '*':
-				lexer->curToken.tokenType=TK_MUL;  
+				lexer->curToken.tokenKind=TK_MUL;  
 				break;
 			case '%':
-				lexer->curToken.tokenType=TK_MOD;
+				lexer->curToken.tokenKind=TK_MOD;
 				break;
-			case '>':
-				lexer->curCh =  Scanner_getNextChar(scanner);
-				if(lexer->curCh=='=') {
-					lexer->curToken.tokenType=TK_GT_EQ;
-					break;
-				} else if(lexer->curCh=='>') {
-					lexer->curToken.tokenType= TK_BIT_SHIFT_RIGHT;
-					break;
-				} else {
-					lexer->curToken.tokenType=TK_GT;
-					break;
-				}
-			case '<':
-				lexer->curCh =  Scanner_getNextChar(scanner);
-				if(lexer->curCh=='=') {
-					lexer->curToken.tokenType=TK_LT_EQ;
-					break;
-				} else if(lexer->curCh=='<') {
-					lexer->curToken.tokenType= TK_BIT_SHIFT_LEFT;
-					break;
-				} else {
-					lexer->curToken.tokenType=TK_LT;
-					break;
-				}
-			case '=':
-				if(lexer->curCh=='=') {
-					lexer->curToken.tokenType= TK_EQ;
-					break;
-				} else {
-					lexer->curToken.tokenType=TK_ASSIGN;
-					break;
-				}
-			case '&':
-				if(lexer->curCh=='&') {
-					lexer->curToken.tokenType= TK_LOGIC_AND;
-					break;
-				} else {
-					lexer->curToken.tokenType= TK_BIT_AND;
-					break;
-				}
-			case '|':
-				if(lexer->curCh=='|') {
-					lexer->curToken.tokenType= TK_LOGIC_OR;
-					break;
-				} else {
-					lexer->curToken.tokenType= TK_BIT_OR;
-					break;
-				}
-			case '!':
-				if(lexer->curCh=='=') {
-					lexer->curToken.tokenType= TK_NOT_EQ;
-					break;
-				} else {
-					lexer->curToken.tokenType= TK_LOGIC_NOT;
-					break;
-				}
 			case ',':
-				lexer->curToken.tokenType= TK_COMMA;
+				lexer->curToken.tokenKind= TK_COMMA;
 				break;
 			case ':':
-				lexer->curToken.tokenType= TK_COLON;
+				lexer->curToken.tokenKind= TK_COLON;
 				break;
 			case ';':
-				lexer->curToken.tokenType= TK_SEMICON;
+				lexer->curToken.tokenKind= TK_SEMICON;
 				break;
 			case '(':
-				lexer->curToken.tokenType= TK_L_PAREN;
+				lexer->curToken.tokenKind= TK_L_PAREN;
 				break;
 			case ')':
-				lexer->curToken.tokenType= TK_R_PAREN;
+				lexer->curToken.tokenKind= TK_R_PAREN;
 				break;
 			case '[':
-				lexer->curToken.tokenType= TK_L_BRACKET;
+				lexer->curToken.tokenKind= TK_L_BRACKET;
 				break;
 			case ']':
-				lexer->curToken.tokenType= TK_R_BRACKET;
+				lexer->curToken.tokenKind= TK_R_BRACKET;
 				break;
 			case '{':
-				lexer->curToken.tokenType= TK_L_BRACE;
+				lexer->curToken.tokenKind= TK_L_BRACE;
 				break;
 			case '}':
-				lexer->curToken.tokenType= TK_R_BRACE;
+				lexer->curToken.tokenKind= TK_R_BRACE;
 				break;
+			case '/':
+				lexer->curToken.tokenKind= TK_DIV;
+				break;	
 			default:
-                lexer->curToken.tokenType = TK_UNKNOWN;
+                lexer->curToken.tokenKind = TK_UNKNOWN;
 		}
+        lexer->curToken.lineNo = lexer->scanner->lineNum;
         return &lexer->curToken;
     }
 
-    lexer->curToken.tokenType= TK_EOF;
+    lexer->curToken.tokenKind= TK_EOF;
     return  &lexer->curToken;
-    
 }
 
+bool isWhitespace(char ch)
+{
+    return ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t';
+}
