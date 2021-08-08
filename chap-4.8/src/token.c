@@ -11,36 +11,14 @@ const TokenTable tokenTables[] = {
 	{TK_COMMENT, 0, 0, "TK_COMMENT", ""},
 
 	//常量值
-	{TK_NULL, 0, 0, "TK_NULL", ""},   //null
-	{TK_TRUE, 0, 0, "TK_TRUE", ""},   //true
-	{TK_FALSE, 0, 0, "TK_FALSE", ""}, //false
 	{TK_NUMBER, 0, 0, "TK_NUMBER", ""},
 	{TK_CHAR, 0, 0, "TK_CHAR", ""},
 	{TK_STRING, 0, 0, "TK_STRING", ""},
+	{TK_MULT_STRING, 0, 0, "TK_MULT_STRING", ""},
 
 	//标识符
 	{TK_ID, 0, 0, "TK_ID", ""},
 
-	//关键字-语句
-	{TK_VAR, TT_KEYWORD, 0, "TK_VAR", "var"},				 //var
-	{TK_FUNC, TT_KEYWORD, 0, "TK_FUNC", "func"},			 //func
-	{TK_STRUCT, TT_KEYWORD, 0, "TK_STRUCT", "struct"},		 //struct
-	{TK_IF, TT_KEYWORD, 0, "TK_IF", "if"},					 //if
-	{TK_ELSE, TT_KEYWORD, 0, "TK_ELSE", "else"},			 //else
-	{TK_WHILE, TT_KEYWORD, 0, "TK_WHILE", "while"},			 //while
-	{TK_FOR, TT_KEYWORD, 0, "TK_FOR", "for"},				 //for
-	{TK_LOOP, TT_KEYWORD, 0, "TK_LOOP", "loop"},			 //loop
-	{TK_BREAK, TT_KEYWORD, 0, "TK_BREAK", "break"},			 //break
-	{TK_CONTINUE, TT_KEYWORD, 0, "TK_CONTINUE", "continue"}, //continue
-	{TK_RETURN, TT_KEYWORD, 0, "TK_RETURN", "return"},		 //return
-
-	//关键字-模块
-	{TK_THIS, TT_KEYWORD, 0, "TK_THIS", "this"},	   //this
-	{TK_SUPER, TT_KEYWORD, 0, "TK_SUPER", "super"},	//super
-	{TK_MODULE, TT_KEYWORD, 0, "TK_MODULE", "module"}, //module
-	{TK_IMPORT, TT_KEYWORD, 0, "TK_IMPORT", "import"}, //import
-	{TK_TRAIT, TT_KEYWORD, 0, "TK_TRAIT", "trait"},	//trait
-	{TK_IMPL, TT_KEYWORD, 0, "TK_IMPL", "impl"},	   //impl
 
 	//分割符合
 	{TK_SEMICON, 0, 0, "TK_SEMICON", ";"},	 //;
@@ -88,7 +66,33 @@ const TokenTable tokenTables[] = {
 	{TK_GT_EQ, 0, 0, "TK_GT_EQ", ">="},		//>=
 	{TK_LT, 0, 0, "TK_LT", "<"},			//<
 	{TK_LT_EQ, 0, 0, "TK_LT_EQ", "<="},		//<=
-	{TK_QUESTION, 0, 0, "TK_QUESTION", "?"} //?
+	{TK_QUESTION, 0, 0, "TK_QUESTION", "?"}, //?
+
+	//关键字- 常量
+	{TK_NULL, 0, 0, "TK_NULL", ""},   //null
+	{TK_TRUE, 0, 0, "TK_TRUE", ""},   //true
+	{TK_FALSE, 0, 0, "TK_FALSE", ""}, //false
+
+	//关键字-语句
+	{TK_VAR, TT_KEYWORD, 0, "TK_VAR", "var"},				 //var
+	{TK_FUNC, TT_KEYWORD, 0, "TK_FUNC", "func"},			 //func
+	{TK_STRUCT, TT_KEYWORD, 0, "TK_STRUCT", "struct"},		 //struct
+	{TK_IF, TT_KEYWORD, 0, "TK_IF", "if"},					 //if
+	{TK_ELSE, TT_KEYWORD, 0, "TK_ELSE", "else"},			 //else
+	{TK_WHILE, TT_KEYWORD, 0, "TK_WHILE", "while"},			 //while
+	{TK_FOR, TT_KEYWORD, 0, "TK_FOR", "for"},				 //for
+	{TK_LOOP, TT_KEYWORD, 0, "TK_LOOP", "loop"},			 //loop
+	{TK_BREAK, TT_KEYWORD, 0, "TK_BREAK", "break"},			 //break
+	{TK_CONTINUE, TT_KEYWORD, 0, "TK_CONTINUE", "continue"}, //continue
+	{TK_RETURN, TT_KEYWORD, 0, "TK_RETURN", "return"},		 //return
+
+	//关键字-模块
+	{TK_THIS, TT_KEYWORD, 0, "TK_THIS", "this"},	   //this
+	{TK_SUPER, TT_KEYWORD, 0, "TK_SUPER", "super"},	//super
+	{TK_MODULE, TT_KEYWORD, 0, "TK_MODULE", "module"}, //module
+	{TK_IMPORT, TT_KEYWORD, 0, "TK_IMPORT", "import"}, //import
+	{TK_TRAIT, TT_KEYWORD, 0, "TK_TRAIT", "trait"},	//trait
+	{TK_IMPL, TT_KEYWORD, 0, "TK_IMPL", "impl"},	   //impl
 };
 
 char *Token_findKindName(TokenKind kind)

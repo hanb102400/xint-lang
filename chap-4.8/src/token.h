@@ -6,45 +6,25 @@
 #include <stdlib.h>
 
 
-
 typedef enum { 
     TK_ERROR,
 	TK_UNKNOWN,
 	TK_EOF,
-	TK_COMMENT,
+
+
+	//注释
+	TK_COMMENT,		
 
 	//数据常量
-    TK_NULL, //null
-	TK_TRUE,	//true
-	TK_FALSE,	//false
 	TK_NUMBER, 
 	TK_CHAR,
 	TK_STRING,
+	TK_MULT_STRING, 
 
     //标识符
 	TK_ID,
 
-	//关键字-语句
-	TK_VAR,			//var
-	TK_FUNC,		//func
-	TK_STRUCT,		//struct
-	TK_IF, 			//if
-	TK_ELSE,		//else
-	TK_WHILE,		//while
-	TK_FOR,			//for
-	TK_LOOP,		//loop
-	TK_BREAK,		//break
-	TK_CONTINUE,	//continue
-    TK_RETURN,		//return
-	//关键字-模块
-	TK_THIS,	 //this
-	TK_SUPER,	 //super
-	TK_MODULE,	 //module
-	TK_IMPORT,	 //import
-    TK_TRAIT,	 //trait
-    TK_IMPL,	 //impl
-
-	//分割符合
+	//分割符号
 	TK_COMMA, 		//,
 	TK_SEMICON, 		//;
 	TK_COLON, 		//:
@@ -59,7 +39,7 @@ typedef enum {
 	//赋值
 	TK_ASSIGN,	//=
 
-		//自增自减
+	//自增自减
 	TK_SELF_ADD,	 //++
 	TK_SELF_SUB,	//--
 
@@ -91,32 +71,36 @@ typedef enum {
 	TK_LT,			//<	
 	TK_LT_EQ,		//<=
 	TK_QUESTION, 	//?
+
+
+	//关键字常量
+    TK_NULL, 	//null
+	TK_TRUE,	//true
+	TK_FALSE,	//false
+
+	//关键字-语句
+	TK_VAR,			//var
+	TK_FUNC,		//func
+	TK_STRUCT,		//struct
+	TK_IF, 			//if
+	TK_ELSE,		//else
+	TK_WHILE,		//while
+	TK_FOR,			//for
+	TK_LOOP,		//loop
+	TK_BREAK,		//break
+	TK_CONTINUE,	//continue
+    TK_RETURN,		//return
+
+	//关键字-模块
+	TK_THIS,	 //this
+	TK_SUPER,	 //super
+	TK_MODULE,	 //module
+	TK_IMPORT,	 //import
+    TK_TRAIT,	 //trait
+    TK_IMPL,	 //impl
 	
 } TokenKind;
 
-
-typedef enum { 
-	TT_OTHER,	 //其他符号
-	TT_KEYWORD,	 //关键字
-	TT_ID,		 //ID
-	TT_DELIM,	 //界符
-	TT_OPERATOR, //操作符
-	TT_VALUE	 //常量值
-} TokeType;
-
-typedef union { 
-    int intVal;
-    double doubleVal;
-    char charVal;
-	String* strVal;
-} TokenVal;
-
-typedef struct Token_{
-    int size;
-	int lineNo;
-    TokenKind tokenKind;
-    TokenVal tokenVal;
-} Token;
 
 
 typedef enum  { 
@@ -127,6 +111,46 @@ typedef enum  {
 	TS_STRING,
     TS_COMMENT
 } TokenStatus;
+
+
+typedef enum {
+   VT_UNDEFINED,
+   VT_NULL,
+   VT_FALSE,
+   VT_TRUE,
+   VT_NUMBER,
+   VT_STRING   
+} ValueType;    
+
+
+/** value **/
+typedef struct {
+   ValueType type;
+   union {
+		int intVal;
+		double doubleVal;
+		char charVal;
+		String* strVal;
+   };
+} Value;
+
+/** token **/
+typedef struct Token_{
+    int size;
+	int lineNo;
+    TokenKind kind;
+    Value value;
+} Token;
+
+
+typedef enum { 
+	TT_SIGN,	 //标记符号
+	TT_VALUE,	 //常量值
+	TT_ID,		 //ID
+	TT_DELIM,	 //界符
+	TT_KEYWORD,	 //关键字
+} TokeType;
+
 
 typedef struct TokenTable_ {
 	TokenKind kind;
